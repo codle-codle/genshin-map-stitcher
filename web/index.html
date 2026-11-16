@@ -30,36 +30,73 @@
         <div class="actions"><button class="btn primary big" id="introOk" type="button">알겠어요, 시작하기</button></div>
       </section>
 
-      <!-- (가) 준비 -->
-      <section class="screen" id="scrReady" hidden>
-        <h2 class="lead">원신에서 이렇게 해 두세요</h2>
-        <ol class="prep">
-          <li class="prep-card">
-            <div class="pic key-pic" aria-hidden="true"><kbd class="keycap">M</kbd></div>
-            <p><b>①</b> 지도를 엽니다</p>
-          </li>
-          <li class="prep-card">
-            <div class="pic wheel-pic" aria-hidden="true">
-              <svg viewBox="0 0 64 96" width="56" height="84"><rect x="6" y="4" width="52" height="88" rx="26" fill="none" stroke="currentColor" stroke-width="4"/><rect x="28" y="16" width="8" height="18" rx="4" fill="currentColor"/><path d="M32 48v22m-9-9 9 9 9-9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <p><b>②</b> 휠을 굴려 <b>끝까지 축소</b>합니다</p>
-            <p class="card-warn">확대한 채로 찍으면 지도가 끊기거나 다 못 찍어요.</p>
-          </li>
-          <li class="prep-card wide">
-            <div class="pair">
-              <figure class="ok"><img src="/static/ready_land.jpg" alt="땅이 가운데 보이는 지도 화면"><figcaption>○ 땅이 가운데</figcaption></figure>
-              <figure class="no"><img src="/static/ready_void.jpg" alt="별만 보이는 지도 바깥 화면"><figcaption>✕ 별만 보임</figcaption></figure>
-            </div>
-            <p><b>③</b> <b>땅이 화면 가운데</b> 보이게 둡니다</p>
-          </li>
-        </ol>
-        <div class="actions center">
-          <button class="btn primary huge" id="startCapture" type="button">지도 찍기 시작</button>
-          <p class="hint">원신 지도 화면에서 <kbd data-key="start">Home</kbd> 키로 시작 · 6~8분 걸려요 · 그동안 마우스가 잠겨요 · 멈추려면 클릭이나 <kbd>Esc</kbd>·<kbd data-key="stop">End</kbd></p>
-          <p class="hint small"><button class="link" id="keyHint" type="button">키보드에 이 키가 없나요? 키 바꾸기 ›</button></p>
-          <p class="msg warn hidden" id="readyMsg"></p>
+      <!-- (가) 준비 — 11/16 다시 짬: 사용법(쓰는 순서) · 주의사항(겪는 순서) 두 덩어리, 그림 먼저·글은 한 줄 -->
+      <section class="screen guide" id="scrReady" hidden>
+        <h2 class="sec-title">사용법</h2>
+        <div class="flow">
+          <div class="flow-group">
+            <p class="where">이 앱에서</p>
+            <ol class="steps one">
+              <li class="step">
+                <div class="pic"><button class="btn primary big" id="startCapture" type="button">지도 찍기 시작</button></div>
+                <p><span class="num">1</span>누르고 권한 창 ‘예’</p>
+              </li>
+            </ol>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">›</div>
+          <div class="flow-group grow">
+            <p class="where">원신에서</p>
+            <ol class="steps" start="2">
+              <li class="step">
+                <div class="pic" aria-hidden="true"><kbd class="keycap">M</kbd></div>
+                <p><span class="num">2</span>지도 열기</p>
+              </li>
+              <li class="step">
+                <div class="pic" aria-hidden="true">
+                  <svg viewBox="0 0 64 96" width="44" height="66"><rect x="6" y="4" width="52" height="88" rx="26" fill="none" stroke="currentColor" stroke-width="4"/><rect x="28" y="16" width="8" height="18" rx="4" fill="currentColor"/><path d="M32 48v22m-9-9 9 9 9-9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <p><span class="num">3</span>끝까지 축소</p>
+              </li>
+              <li class="step land">
+                <div class="pic">
+                  <img class="land-ok" src="/static/ready_land.jpg" alt="땅이 가운데 보이는 지도 화면">
+                  <span class="mark ok" aria-hidden="true">○</span>
+                  <figure class="land-no"><img src="/static/ready_void.jpg" alt="별만 보이는 지도 바깥 화면"><span class="mark no" aria-hidden="true">✕</span></figure>
+                </div>
+                <p><span class="num">4</span>땅을 가운데로</p>
+              </li>
+              <li class="step">
+                <div class="pic" aria-hidden="true"><kbd class="keycap wide" data-key="start">Home</kbd></div>
+                <p><span class="num">5</span>누르면 시작</p>
+              </li>
+            </ol>
+          </div>
         </div>
+        <p class="flow-after">그다음은 자동이에요 · 찍고 합치기까지 6~8분 · 끝나면 소리로 알려요</p>
+        <p class="msg warn hidden" id="readyMsg"></p>
+
+        <h2 class="sec-title cautions-title">주의사항</h2>
+        <ul class="cautions">
+          <li class="caution hot">
+            <img class="c-icon" src="/static/track_marker.png" alt="노란 추적 표시">
+            <div><p class="c-title">임무 추적을 끄세요</p><p class="c-sub">켜 두면 이 표시가 지도에 찍혀요</p></div>
+          </li>
+          <li class="caution">
+            <div class="c-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><circle cx="21" cy="21" r="13"/><path d="M14 21h14M31 31l10 10"/></svg>
+            </div>
+            <div><p class="c-title">확대한 채로 찍지 마세요</p><p class="c-sub">지도가 끊기거나 다 못 찍어요</p></div>
+          </li>
+          <li class="caution">
+            <div class="c-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="6" width="22" height="34" rx="11"/><path d="M21 13v7"/><rect x="28" y="28" width="14" height="12" rx="2" fill="currentColor" stroke="none"/><path d="M31 28v-3a4 4 0 0 1 8 0v3"/></svg>
+            </div>
+            <div><p class="c-title">찍는 동안 마우스가 잠겨요</p><p class="c-sub">멈추기: 클릭 · <kbd>Esc</kbd> · <kbd data-key="stop">End</kbd></p></div>
+          </li>
+        </ul>
+
         <div class="more">
+          <button class="link" id="keyHint" type="button">키 바꾸기 ›</button>
           <button class="link" id="goManual" type="button">이미 찍은 사진으로 합치기 ›</button>
         </div>
       </section>

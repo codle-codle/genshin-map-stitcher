@@ -83,20 +83,47 @@ kbd.keycap.inline { min-width: 0; height: auto; font-size: inherit; padding: 2px
 .facts dt { color: var(--text-3); font-weight: 600; }
 .facts dd { margin: 0; color: var(--text); }
 
-/* ---------- 준비 ---------- */
-.prep { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr 2.2fr; gap: 16px; }
-.prep-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; }
-.prep-card p { margin: 12px 0 0; font-size: 16px; }
-.prep-card p.card-warn { margin: 6px 0 0; font-size: 14px; line-height: 1.45; color: #f3c48f; }  /* 11/14 확대 축척 미지원 경고 */
-.pic { height: 132px; display: grid; place-items: center; background: #0d0f12; border-radius: 8px; color: var(--text-2); }
-.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.pair figure { margin: 0; position: relative; border-radius: 8px; overflow: hidden; border: 3px solid transparent; }
-.pair figure.ok { border-color: var(--ok); }
-.pair figure.no { border-color: var(--danger); }
-.pair img { display: block; width: 100%; height: 126px; object-fit: cover; }
-.pair figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 4px 8px; font-size: 15px; font-weight: 700; background: rgba(0,0,0,.65); }
-.pair .ok figcaption { color: #8fe0b8; }
-.pair .no figcaption { color: #ffb0a6; }
+/* ---------- 준비(11/16): 사용법 = 쓰는 순서대로 번호 카드, 주의사항 = 겪는 순서대로 아이콘 줄 ---------- */
+.screen.guide { max-width: 1080px; }
+.sec-title { margin: 0 0 12px; padding-left: 10px; border-left: 4px solid var(--accent); font-size: 19px; font-weight: 700; line-height: 1.2; color: var(--text); }
+.cautions-title { border-left-color: var(--warn); }
+.sec-title + .flow, .sec-title + .cautions { margin-top: 0; }
+.flow { display: flex; align-items: stretch; gap: 10px; }
+.flow-group { display: flex; flex-direction: column; gap: 8px; }
+.flow-group.grow { flex: 1; min-width: 0; }
+.where { margin: 0; font-size: 14px; font-weight: 600; color: var(--text-2); }
+.flow-arrow { align-self: center; margin-top: 28px; font-size: 34px; line-height: 1; color: var(--text-3); }
+.steps { list-style: none; margin: 0; padding: 0; flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.steps.one { grid-template-columns: 236px; }
+.steps .step.land { grid-column: span 1; }
+.step { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; display: flex; flex-direction: column; }
+.step .pic { position: relative; height: 124px; display: grid; place-items: center; background: #0d0f12; border-radius: 8px; color: var(--text-2); overflow: hidden; }
+.step p { margin: 10px 0 0; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.num { flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent); color: var(--accent-fg); font-size: 14px; font-weight: 800; }
+.steps.one .pic { background: none; }
+.steps.one .btn { width: 100%; height: 64px; font-size: 20px; border-radius: 12px; white-space: nowrap; padding: 0 12px; }
+kbd.keycap.wide { min-width: 0; padding: 0 16px; font-size: 22px; }
+.land-ok { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.land-no { position: absolute; right: 6px; bottom: 6px; width: 40%; margin: 0; border: 2px solid var(--danger); border-radius: 5px; overflow: hidden; }
+.land-no img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.mark { position: absolute; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font-size: 14px; font-weight: 800; }
+.mark.ok { left: 6px; top: 6px; background: var(--ok); color: #06140d; }
+.land-no .mark.no { left: 50%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; font-size: 12px; background: var(--danger); color: #1f0805; }
+.step.land .pic { box-shadow: inset 0 0 0 3px var(--ok); }
+.flow-after { margin: 12px 0 0; font-size: 15px; color: var(--text-2); text-align: center; }
+#readyMsg { margin-top: 12px; }
+
+.cautions { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 10px; }
+.screen.guide .sec-title:not(:first-child) { margin-top: 30px; }
+.caution { display: flex; align-items: center; gap: 14px; padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+.caution.hot { background: var(--warn-bg); border-color: var(--warn); }
+.c-icon { flex: none; width: 64px; height: 64px; border-radius: 10px; display: grid; place-items: center; background: #0d0f12; color: var(--text-2); object-fit: cover; }
+.caution.hot .c-icon { outline: 2px solid var(--warn); }
+.c-title { margin: 0; font-size: 16px; font-weight: 700; }
+.caution.hot .c-title { color: #ffd9a8; }
+.c-sub { margin: 2px 0 0; font-size: 14px; color: var(--text-2); line-height: 1.45; }
+.caution.hot .c-sub { color: #f3c48f; }
 
 /* ---------- 기다림·찍는 중 ---------- */
 .problem { background: var(--warn-bg); border-left: 6px solid var(--warn); border-radius: 8px; padding: 14px 18px; margin: 0 0 24px; }
@@ -205,9 +232,12 @@ body.dragging .drop { border-color: var(--accent); background: rgba(78,161,255,.
 .toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 20; background: #22272f; border: 1px solid var(--line);
   padding: 12px 20px; border-radius: 10px; font-size: 16px; max-width: 80vw; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
 
-@media (max-width: 860px) {
-  .prep { grid-template-columns: 1fr 1fr; }
-  .prep-card.wide { grid-column: 1 / -1; }
+@media (max-width: 900px) {
+  .flow { flex-direction: column; }
+  .flow-arrow { display: none; }
+  .steps.one { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cautions { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
   .track i { transition: none; }

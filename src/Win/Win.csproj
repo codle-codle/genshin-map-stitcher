@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 윈도우 부품: SendInput 끌기, 화면 찍기, 키 감시, 마우스 잠금 훅, 알림 띠. -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GenshinMap.Win</RootNamespace>
+    <AssemblyName>GenshinMap.Win</AssemblyName>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,7 @@
+bin/
+obj/
+.vs/
+*.user
+publish/
+게시/
+작업/

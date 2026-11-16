@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>원신 지도 합치기</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <h1>원신 지도 합치기</h1>
+      <nav class="top-nav">
+        <button class="link" id="navHistory" type="button">지난 지도</button>
+        <button class="link" id="navAbout" type="button">이 앱이 하는 일</button>
+        <button class="link" id="navSettings" type="button">설정</button>
+      </nav>
+    </header>
+
+    <main class="main">
+      <!-- 처음 한 번: 이 앱이 하는 일 -->
+      <section class="screen narrow" id="scrIntro" hidden>
+        <h2 class="lead">원신의 큰 지도를 대신 끌어 가며 찍어서<br>한 장으로 합쳐 줘요.</h2>
+        <dl class="facts">
+          <dt>하는 일</dt><dd>원신 지도 화면에서 마우스로 지도를 끌고, 화면을 찍고, 이 PC 안에서 합칩니다.</dd>
+          <dt>안 하는 일</dt><dd>게임 파일·메모리·통신은 건드리지 않습니다.</dd>
+          <dt>관리자 권한</dt><dd>원신이 관리자 권한으로 돌아서, 같은 권한이 있어야 지도를 끌 수 있습니다. 찍기를 시작할 때 윈도우가 한 번 물어봅니다.</dd>
+          <dt>걸리는 시간</dt><dd>6~8분. 그동안 마우스가 잠깁니다. 언제든 클릭하거나 <kbd>Esc</kbd>·<kbd data-key="stop">End</kbd> 키를 누르면 멈추고 마우스를 돌려받습니다.</dd>
+        </dl>
+        <div class="actions"><button class="btn primary big" id="introOk" type="button">알겠어요, 시작하기</button></div>
+      </section>
+
+      <!-- (가) 준비 -->
+      <section class="screen" id="scrReady" hidden>
+        <h2 class="lead">원신에서 이렇게 해 두세요</h2>
+        <ol class="prep">
+          <li class="prep-card">
+            <div class="pic key-pic" aria-hidden="true"><kbd class="keycap">M</kbd></div>
+            <p><b>①</b> 지도를 엽니다</p>
+          </li>
+          <li class="prep-card">
+            <div class="pic wheel-pic" aria-hidden="true">
+              <svg viewBox="0 0 64 96" width="56" height="84"><rect x="6" y="4" width="52" height="88" rx="26" fill="none" stroke="currentColor" stroke-width="4"/><rect x="28" y="16" width="8" height="18" rx="4" fill="currentColor"/><path d="M32 48v22m-9-9 9 9 9-9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <p><b>②</b> 휠을 굴려 <b>끝까지 축소</b>합니다</p>
+            <p class="card-warn">확대한 채로 찍으면 지도가 끊기거나 다 못 찍어요.</p>
+          </li>
+          <li class="prep-card wide">
+            <div class="pair">
+              <figure class="ok"><img src="/static/ready_land.jpg" alt="땅이 가운데 보이는 지도 화면"><figcaption>○ 땅이 가운데</figcaption></figure>
+              <figure class="no"><img src="/static/ready_void.jpg" alt="별만 보이는 지도 바깥 화면"><figcaption>✕ 별만 보임</figcaption></figure>
+            </div>
+            <p><b>③</b> <b>땅이 화면 가운데</b> 보이게 둡니다</p>
+          </li>
+        </ol>
+        <div class="actions center">
+          <button class="btn primary huge" id="startCapture" type="button">지도 찍기 시작</button>
+          <p class="hint">원신 지도 화면에서 <kbd data-key="start">Home</kbd> 키로 시작 · 6~8분 걸려요 · 그동안 마우스가 잠겨요 · 멈추려면 클릭이나 <kbd>Esc</kbd>·<kbd data-key="stop">End</kbd></p>
+          <p class="hint small"><button class="link" id="keyHint" type="button">키보드에 이 키가 없나요? 키 바꾸기 ›</button></p>
+          <p class="msg warn hidden" id="readyMsg"></p>
+        </div>
+        <div class="more">
+          <button class="link" id="goManual" type="button">이미 찍은 사진으로 합치기 ›</button>
+        </div>
+      </section>
+
+      <!-- (나) Home 기다림 -->
+      <section class="screen narrow" id="scrWaiting" hidden>
+        <div class="problem hidden" id="waitProblem">
+          <p class="problem-title" id="waitProblemTitle"></p>
+          <p class="problem-sub" id="waitProblemSub"></p>
+        </div>
+        <h2 class="lead big" id="waitTitle">이제 원신으로 가서<br>지도 화면에서 <kbd class="keycap inline">Home</kbd> 키를 누르세요</h2>
+        <p class="sub" id="waitSub">지도 열기 → 끝까지 축소 → 땅이 가운데</p>
+        <div class="actions"><button class="btn" id="waitCancel" type="button">그만두기</button></div>
+      </section>
+
+      <!-- (다) 찍는 중 -->
+      <section class="screen narrow" id="scrCapturing" hidden>
+        <h2 class="lead big" id="capTitle">찍는 중이에요</h2>
+        <div class="bar-row"><div class="track"><i id="capBar"></i></div><span class="left" id="capLeft"></span></div>
+        <p class="sub">마우스는 잠겨 있어요. 자리를 비워도 돼요. 끝나면 소리로 알려 드려요.<br>멈추려면 클릭하거나 <kbd>Esc</kbd>·<kbd data-key="stop">End</kbd> 키를 누르세요.</p>
+        <div class="actions spread">
+          <span class="count" id="capCount"></span>
+          <button class="btn" id="capStop" type="button">멈추기 (<span data-key="stop">End</span>)</button>
+        </div>
+      </section>
+
+      <!-- (라)(마) 합치는 중 · 완성: 한 화면 -->
+      <section class="screen full" id="scrMerge" hidden>
+        <div class="merge-head">
+          <h2 class="lead" id="mergeTitle"></h2>
+          <p class="phase" id="mergePhase"></p>
+          <div class="bar-row" id="mergeBarRow"><div class="track"><i id="mergeBar"></i></div><span class="left" id="mergeLeft"></span></div>
+          <div class="msg warn hidden" id="mergeWarn"></div>
+        </div>
+        <!-- 11/14 탭: 기본은 지도, 궁금한 사람만 찍은 사진을 본다 -->
+        <div class="tabs" id="mergeTabs" role="tablist">
+          <button class="tab" type="button" role="tab" data-tab="map" aria-controls="stage">지도</button>
+          <button class="tab" type="button" role="tab" data-tab="shots" aria-controls="shotsPane">찍은 사진 <span class="tab-n" id="tabShotsCount"></span></button>
+        </div>
+        <div class="pane shots-pane" id="shotsPane" role="tabpanel" hidden>
+          <p class="pane-note">찍은 순서대로예요. 누르면 크게 볼 수 있어요.</p>
+          <div class="pgrid" id="shotGrid"></div>
+        </div>
+        <div class="stage" id="stage" role="tabpanel">
+          <canvas id="cv"></canvas>
+          <p class="stage-note hidden" id="stageNote"></p>
+          <div class="view-toggle hidden" id="viewToggle" role="radiogroup">
+            <button type="button" data-v="trimmed" class="on">다듬은 지도</button>
+            <button type="button" data-v="stitched">합친 그대로</button>
+          </div>
+          <button class="btn fit hidden" id="fitBtn" type="button">전체 보기</button>
+        </div>
+        <div class="merge-foot">
+          <div class="links" id="doneLinks">
+            <button class="link" id="openTrim" type="button">가장자리 다시 다듬기 ›</button>
+            <button class="link" id="newCapture" type="button">새로 찍기 ›</button>
+          </div>
+          <div class="buttons">
+            <button class="btn hidden" id="mergeStop" type="button">멈추기</button>
+            <button class="btn big hidden" id="openFolder" type="button">폴더 열기</button>
+            <button class="btn primary big hidden" id="openBig" type="button">원본 그림 열기 <span class="btn-sub">확대해서 선명도 보기</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- (바) 멈춤 · 실패 -->
+      <section class="screen narrow" id="scrFail" hidden>
+        <h2 class="lead" id="failTitle"></h2>
+        <p class="sub" id="failSub"></p>
+        <div class="actions">
+          <button class="btn primary big hidden" id="failStitch" type="button">찍은 데까지 합치기</button>
+          <button class="btn big" id="failRetry" type="button">다시 찍기</button>
+        </div>
+        <div class="more"><button class="link" id="failFolder" type="button">기록 폴더 열기(제작자에게 보낼 때)</button></div>
+      </section>
+
+      <!-- 이미 찍은 사진으로 합치기 -->
+      <section class="screen full" id="scrManual" hidden>
+        <div class="manual-head">
+          <div>
+            <h2 class="lead">이미 찍은 사진으로 합치기</h2>
+            <p class="sub">지도를 조금씩 겹치게 찍은 사진들을 넣어 주세요. 파일 이름 순서대로 합쳐요.</p>
+          </div>
+          <div class="buttons">
+            <button class="btn" id="manualBack" type="button">돌아가기</button>
+            <button class="btn" id="pickFiles" type="button">사진 넣기</button>
+            <button class="btn primary big" id="manualStitch" type="button">합치기</button>
+          </div>
+        </div>
+        <div class="progress hidden" id="uploadProgress"><div class="track"><i></i></div><span class="left"></span></div>
+        <p class="msg warn hidden" id="manualMsg"></p>
+        <div class="drop" id="dropZone">
+          <div class="shots" id="shotsView"></div>
+          <div class="drop-empty" id="dropEmpty">
+            <p class="drop-title">사진을 여기로 끌어다 놓으세요</p>
+            <button class="btn primary" id="pickFilesEmpty" type="button">파일 고르기</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 옆에서 나오는 판: 지난 지도 · 설정 · 가장자리 다듬기 -->
+  <div class="sheet-veil hidden" id="veil"></div>
+  <aside class="sheet hidden" id="sheetHistory">
+    <div class="sheet-head"><h3>지난 지도</h3><button class="btn" data-close type="button">닫기</button></div>
+    <ul class="history" id="historyList"></ul>
+  </aside>
+  <aside class="sheet hidden" id="sheetSettings">
+    <div class="sheet-head"><h3>설정</h3><button class="btn" data-close type="button">닫기</button></div>
+    <div class="field">
+      <span class="field-label">찍기 시작 키</span>
+      <button class="keybox" id="keyStart" type="button" data-which="start"></button>
+      <span class="field-help">누른 뒤 쓰고 싶은 키를 누르세요. 원신 지도 화면에서 이 키를 누르면 찍기가 시작돼요.</span>
+    </div>
+    <div class="field">
+      <span class="field-label">멈추기 키</span>
+      <button class="keybox" id="keyStop" type="button" data-which="stop"></button>
+      <span class="field-help">찍는 중에 이 키를 누르면 멈춰요. Esc와 마우스 클릭으로도 늘 멈출 수 있어요.</span>
+    </div>
+    <div class="field-row">
+      <button class="link" id="keyReset" type="button">기본값(Home · End)으로</button>
+    </div>
+    <p class="msg warn hidden" id="keyMsg"></p>
+    <label class="field">
+      <span class="field-label">최대 사진 수</span>
+      <input type="number" id="autoMax" min="10" max="600" step="10" value="300">
+      <span class="field-help">지도가 아주 넓을 때 여기서 멈춰요. 보통은 바꿀 필요가 없어요.</span>
+    </label>
+  </aside>
+  <aside class="sheet hidden" id="sheetTrim">
+    <div class="sheet-head"><h3>가장자리 다듬기</h3><button class="btn" data-close type="button">닫기</button></div>
+    <label class="field">
+      <span class="field-label">여백 <b id="marginValue">70</b>px</span>
+      <input type="range" id="margin" min="0" max="200" step="5" value="70">
+      <span class="field-help">경계선 바깥으로 얼마나 남길지</span>
+    </label>
+    <div class="field">
+      <span class="field-label">따라 자를 경계선 색</span>
+      <div class="seg" id="lineSeg" role="radiogroup">
+        <button type="button" data-v="cyan" class="on">청록</button>
+        <button type="button" data-v="gray">회색</button>
+        <button type="button" data-v="both">둘 다</button>
+      </div>
+    </div>
+    <div class="field">
+      <span class="field-label">바깥 얼룩 지우기</span>
+      <div class="seg col" id="islandSeg" role="radiogroup">
+        <button type="button" data-v="default" class="on">기본 — 큰 덩어리 하나만 남기기</button>
+        <button type="button" data-v="strict">더 세게 — 작은 얼룩까지 지우기</button>
+        <button type="button" data-v="keep2">지도가 두 덩어리일 때</button>
+        <button type="button" data-v="off">끄기 — 경계선 기준으로만 자르기</button>
+      </div>
+    </div>
+    <button class="btn primary big wide" id="trimBtn" type="button">다시 다듬기</button>
+  </aside>
+
+  <!-- 찍은 사진 크게 보기 -->
+  <div class="viewer hidden" id="viewer" role="dialog" aria-modal="true" aria-label="찍은 사진 크게 보기">
+    <button class="vbtn vclose" id="viewerClose" type="button" aria-label="닫기">✕</button>
+    <button class="vbtn vprev" id="viewerPrev" type="button" aria-label="앞 사진">‹</button>
+    <img id="viewerImg" alt="">
+    <button class="vbtn vnext" id="viewerNext" type="button" aria-label="다음 사진">›</button>
+    <p class="vcount" id="viewerCount"></p>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/bmp" multiple hidden>
+  <div class="toast hidden" id="toast" role="status"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# 태그(v*)를 올리면 Windows에서 게시 → ZIP + SHA-256 → 빌드 출처 증명 → Releases에 올린다.
+# 외부 Action은 커밋 해시로 고정했다(태그는 옮겨질 수 있다). 권한은 이 일에 필요한 것만.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch: # 손으로 돌리면 빌드·묶기·증명까지만(Releases에는 안 올림)
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write      # Releases 만들기
+      id-token: write      # 빌드 출처 증명
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+
+      - name: 게시
+        shell: pwsh
+        run: dotnet publish src/App/App.csproj -c Release -o publish
+
+      - name: ZIP과 SHA-256
+        shell: pwsh
+        run: |
+          $name = "GenshinMap-$($env:GITHUB_REF_NAME)-win-x64"
+          Compress-Archive -Path publish/* -DestinationPath "$name.zip"
+          $hash = (Get-FileHash "$name.zip" -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $name.zip" | Out-File -Encoding ascii "$name.zip.sha256"
+          "ZIP=$name.zip" | Out-File -Append -Encoding utf8 $env:GITHUB_ENV
+
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: ${{ env.ZIP }}
+
+      - name: Releases에 올리기
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$env:GITHUB_REF_NAME" "$env:ZIP" "$env:ZIP.sha256" --title "$env:GITHUB_REF_NAME" --notes "압축을 풀고 GenshinMap.exe를 실행하세요(관리자 권한을 묻습니다). 설명은 README.md. 파일이 이 저장소의 빌드에서 나왔는지는 'gh attestation verify <zip> --repo <이 저장소>'로 확인할 수 있습니다."

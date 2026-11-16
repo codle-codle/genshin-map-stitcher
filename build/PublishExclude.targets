@@ -1,0 +1,16 @@
+<Project>
+  <!--
+    배포본에는 지도 합치기에 꼭 필요한 것만. 꾸러미가 딸려 보내지만 안 쓰는 것을 게시 목록에서 뺀다.
+    - opencv_videoio_ffmpeg*.dll: OpenCV의 동영상 읽기 부품(FFmpeg, LGPL). 이 앱은 동영상을 안 쓴다. 사진 읽기·쓰기는 OpenCvSharpExtern.dll 안에 있다
+      (5-0 시험이 이 DLL을 뺀 폴더에서 사진 왕복을 확인한다). 넣으면 FFmpeg 라이선스 의무가 따로 생긴다.
+    - Microsoft.Web.WebView2.*.xml: 개발용 설명서.
+  -->
+  <Target Name="ExcludeUnneededPublishFiles" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <_Unneeded Include="@(ResolvedFileToPublish)" Condition="$([System.String]::Copy('%(Filename)').StartsWith('opencv_videoio_ffmpeg'))" />
+      <_Unneeded Include="@(ResolvedFileToPublish)" Condition="$([System.String]::Copy('%(Filename)').StartsWith('Microsoft.Web.WebView2')) and '%(Extension)' == '.xml'" />
+      <ResolvedFileToPublish Remove="@(_Unneeded)" />
+    </ItemGroup>
+    <Message Importance="high" Text="게시에서 뺌: @(_Unneeded->'%(Filename)%(Extension)', ', ')" />
+  </Target>
+</Project>

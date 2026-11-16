@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Core/Core.csproj" />
+    <Project Path="src/Win/Win.csproj" />
+    <Project Path="src/App/App.csproj" />
+    <Project Path="src/Cli/Cli.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 판단·칸 관리·재기 부품·붙이기·다듬기. 화면·마우스·시계는 인터페이스로만 받는다. -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GenshinMap.Core</RootNamespace>
+    <AssemblyName>GenshinMap.Core</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- OpenCvSharp5.Windows 묶음에서 쓰는 둘만(본체 + 네이티브 OpenCV). 묶음의 Gdip·Wpf 확장은 안 쓰고, System.Drawing.Common을 더 끌어온다. -->
+    <PackageReference Include="OpenCvSharp5" Version="[$(OpenCvSharpVersion)]" />
+    <PackageReference Include="OpenCvSharp5.runtime.win" Version="[$(OpenCvSharpVersion)]" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- 시련 공지 알아보기 그림(py: 엔진/trial_notice.png, trial_output_mask.png). 실행 파일 안에 묶는다 -->
+    <EmbeddedResource Include="Assets\*.png" LogicalName="GenshinMap.Core.Assets.%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

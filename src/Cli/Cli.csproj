@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 개발용 콘솔 명령(관리자 아님): stitch·trim·engine(앱이 자식 프로세스로 쓰는 것과 같음), info, imgcopy(그림 읽기·쓰기 왕복). 배포본에는 안 들어간다. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>GenshinMap.Cli</RootNamespace>
+    <AssemblyName>GenshinMapCli</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+</Project>

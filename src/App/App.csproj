@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 앱 창(WinForms + WebView2). 붙이기·다듬기는 이 exe를 인자와 함께 자식 프로세스로 다시 띄워 돌린다. 배포본 = 이 프로젝트의 게시 출력. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>GenshinMap.App</RootNamespace>
+    <AssemblyName>GenshinMap</AssemblyName>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Win\Win.csproj" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="[$(WebView2Version)]" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- 화면(파이썬 판 web/ 그대로, app.js를 고치지 않는다) -->
+    <Content Include="..\..\web\**" Link="web\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- 배포본에 들어가는 README는 하나(쓰는 사람 + AI 에이전트용) -->
+    <None Include="..\..\README.md" Link="README.md" CopyToPublishDirectory="PreserveNewest" CopyToOutputDirectory="Never" />
+  </ItemGroup>
+  <Import Project="..\..\build\ThirdPartyNotices.targets" />
+  <Import Project="..\..\build\PublishExclude.targets" />
+</Project>

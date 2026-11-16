@@ -1,0 +1,63 @@
+<Project>
+  <!--
+    게시(dotnet publish)할 때 외부 부품의 라이선스·고지 글을 꾸러미 폴더에서 모아 게시 출력에 넣는다.
+    손으로 베끼지 않는다: 판이 바뀌면 같이 바뀌고, 글이 없거나 라이선스가 바뀌면 게시가 멈춘다.
+    결과: <게시 폴더>/THIRD-PARTY-NOTICES.txt(목록) + licenses/<부품>/<원래 파일>
+  -->
+  <Target Name="CollectThirdPartyNotices" AfterTargets="Publish">
+    <PropertyGroup>
+      <_TpnDir>$(PublishDir)licenses\</_TpnDir>
+      <_PkgRoot>$([MSBuild]::EnsureTrailingSlash('$(NuGetPackageRoot)'))</_PkgRoot>
+      <_OcvPkg>$(_PkgRoot)opencvsharp5\$(OpenCvSharpVersion)\</_OcvPkg>
+      <_OcvRtPkg>$(_PkgRoot)opencvsharp5.runtime.win\$(OpenCvSharpVersion)\</_OcvRtPkg>
+      <_Wv2Pkg>$(_PkgRoot)microsoft.web.webview2\$(WebView2Version)\</_Wv2Pkg>
+      <_ApacheText>$(MSBuildThisFileDirectory)..\licenses\Apache-2.0.txt</_ApacheText>
+      <_AppLicense>$(MSBuildThisFileDirectory)..\LICENSE</_AppLicense>
+      <_LicXPath>/*[local-name()='package']/*[local-name()='metadata']/*[local-name()='license']/text()</_LicXPath>
+    </PropertyGroup>
+
+    <!-- OpenCvSharp(네이티브 OpenCV 포함): 꾸러미에 글 파일이 없고 nuspec에 라이선스 이름만 있다 → 이름을 확인하고 Apache-2.0 원문을 넣는다 -->
+    <XmlPeek XmlInputPath="$(_OcvPkg)opencvsharp5.nuspec" Query="$(_LicXPath)">
+      <Output TaskParameter="Result" PropertyName="_OcvLicense" />
+    </XmlPeek>
+    <XmlPeek XmlInputPath="$(_OcvRtPkg)opencvsharp5.runtime.win.nuspec" Query="$(_LicXPath)">
+      <Output TaskParameter="Result" PropertyName="_OcvRtLicense" />
+    </XmlPeek>
+    <Error Condition="'$(_OcvLicense)' != 'Apache-2.0' or '$(_OcvRtLicense)' != 'Apache-2.0'"
+           Text="OpenCvSharp 라이선스가 Apache-2.0이 아님('$(_OcvLicense)', '$(_OcvRtLicense)'). 고지 글을 다시 정해야 한다." />
+    <Error Condition="!Exists('$(_ApacheText)')" Text="licenses/Apache-2.0.txt 없음" />
+
+    <!-- WebView2 SDK: 꾸러미 안의 LICENSE.txt·NOTICE.txt -->
+    <ItemGroup>
+      <_Wv2Lic Include="$(_Wv2Pkg)LICENSE.txt;$(_Wv2Pkg)NOTICE.txt" />
+    </ItemGroup>
+    <Error Condition="!Exists('$(_Wv2Pkg)LICENSE.txt')" Text="WebView2 LICENSE.txt 없음: $(_Wv2Pkg)" />
+
+    <!-- .NET 런타임(자체 포함 게시라 실린다): 실제로 쓴 런타임 꾸러미 폴더의 LICENSE·THIRD-PARTY-NOTICES -->
+    <ItemGroup>
+      <_RtPack Include="@(ResolvedRuntimePack)" Condition="'%(ResolvedRuntimePack.FrameworkName)' == 'Microsoft.NETCore.App' or '%(ResolvedRuntimePack.FrameworkName)' == 'Microsoft.WindowsDesktop.App'" />
+      <_RtLic Include="%(_RtPack.PackageDirectory)\LICENSE*;%(_RtPack.PackageDirectory)\THIRD-PARTY-NOTICES*" Pack="%(_RtPack.FrameworkName)" Ver="%(_RtPack.NuGetPackageVersion)" />
+    </ItemGroup>
+    <Error Condition="'@(_RtLic)' == ''" Text=".NET 런타임 꾸러미의 라이선스 글을 못 찾음(ResolvedRuntimePack)" />
+
+    <Copy SourceFiles="$(_ApacheText)" DestinationFolder="$(_TpnDir)OpenCvSharp5" />
+    <Copy SourceFiles="@(_Wv2Lic)" DestinationFolder="$(_TpnDir)Microsoft.Web.WebView2" Condition="Exists('%(FullPath)')" />
+    <Copy SourceFiles="@(_RtLic)" DestinationFiles="@(_RtLic->'$(_TpnDir)%(Pack)\%(Filename)%(Extension)')" />
+    <Copy SourceFiles="$(_AppLicense)" DestinationFolder="$(PublishDir)" Condition="Exists('$(_AppLicense)')" />
+    <Warning Condition="!Exists('$(_AppLicense)')" Text="앱 자신의 LICENSE가 아직 없다(라이선스는 사용자가 고른다. SignPath 무료 서명은 OSI 라이선스 필요)." />
+
+    <ItemGroup>
+      <_TpnLine Include="This program includes the following third-party components." />
+      <_TpnLine Include="Each license text is in the licenses folder next to this file." />
+      <_TpnLine Include="%20" />
+      <_TpnLine Include="- OpenCvSharp5 $(OpenCvSharpVersion) (https://github.com/shimat/opencvsharp), including native OpenCV 5.0.0 (https://opencv.org): $(_OcvLicense) - licenses/OpenCvSharp5/Apache-2.0.txt" />
+      <_TpnLine Include="- Microsoft.Web.WebView2 $(WebView2Version) (https://aka.ms/webview): licenses/Microsoft.Web.WebView2/" />
+      <_TpnLine Include="- %(_RtPack.FrameworkName) %(_RtPack.NuGetPackageVersion) (https://github.com/dotnet): licenses/%(_RtPack.FrameworkName)/" />
+      <_TpnLine Include="%20" />
+      <_TpnLine Include="The WebView2 Runtime is not included. The program uses the Evergreen runtime installed in Windows." />
+    </ItemGroup>
+    <WriteLinesToFile File="$(PublishDir)THIRD-PARTY-NOTICES.txt" Lines="@(_TpnLine)" Overwrite="true" Encoding="UTF-8" />
+    <Warning Text="OpenCV가 네이티브 DLL에 묶은 3rdparty 라이브러리(zlib·libpng 등)의 고지는 아직 안 모았다(배포 전 확인)." />
+    <Message Importance="high" Text="외부 부품 고지 → $(PublishDir)THIRD-PARTY-NOTICES.txt" />
+  </Target>
+</Project>

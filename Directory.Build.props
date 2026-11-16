@@ -4,6 +4,12 @@
     <OpenCvSharpVersion>5.0.0.20261018</OpenCvSharpVersion>
     <WebView2Version>1.0.4314.35</WebView2Version>
 
+    <!-- 실행 파일 속성(파일 > 속성 > 자세히)에 보이는 정보. 판은 Releases 태그(v0.1.0)와 맞춘다. -->
+    <Version>0.1.0</Version>
+    <Product>Genshin Map Stitcher</Product>
+    <Company>codle-codle</Company>
+    <Copyright>Copyright (c) 2026 코들코들 (MIT)</Copyright>
+
     <TargetFramework>net10.0-windows</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <ImplicitUsings>enable</ImplicitUsings>

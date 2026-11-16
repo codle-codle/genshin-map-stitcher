@@ -258,6 +258,7 @@ dotnet publish src/App/App.csproj -c Release -o 게시
 | OpenCV 부품 | 게시본의 `OpenCvSharp.dll`·`OpenCvSharpExtern.dll`과 nuget.org 꾸러미 안 파일의 SHA-256 비교 | 같음(고친 파일 아님) |
 | 게시본 서명 | 모든 .exe·.dll의 Authenticode 확인 | 서명 없는 것은 2-1-2의 6개뿐, 나머지는 마이크로소프트 서명 유효 |
 | 백신 | Microsoft Defender로 개발 PC 게시본 폴더 검사(`MpCmdRun -Scan -ScanType 3`) | 위협 없음 |
+| 외부 부품 고지 | `OpenCvSharpExtern.dll` 하나에 OpenCV 말고도 contrib·Tesseract·Leptonica·이미지 코덱·OpenSSL·curl 등이 정적으로 묶여 있다. OpenCvSharp 5.0.0.20261018의 빌드 설정(vcpkg 의존 닫힘)·OpenCV 소스·DLL 안 글자 흔적으로 목록을 만들고 각 원문을 원래 저장소에서 받음 | 27개 부품을 `licenses/OpenCvSharpExtern/`(목록 `README.txt`)에 넣음. 게시할 때 자동으로 실리고, OpenCvSharp 판을 바꾸면 게시가 멈춰 다시 모으게 했다 |
 
 안 한 것: Releases ZIP 자체의 백신 검사(개발 PC 게시본만 검사), VirusTotal 같은 여러 백신 검사, 실행 중 네트워크 감시(위 표). 입력 보내기·키 읽기·관리자 실행·화면 찍기가 겹쳐 일부 백신이 매크로로 오진할 수 있다 — 추측.
 

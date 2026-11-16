@@ -1,0 +1,283 @@
+[
+    {
+        "folder":  "opencv",
+        "name":  "OpenCV",
+        "version":  "5.0.0",
+        "license":  "Apache-2.0",
+        "source":  "https://github.com/opencv/opencv",
+        "files":  [
+                      "LICENSE",
+                      "COPYRIGHT"
+                  ]
+    },
+    {
+        "folder":  "opencv_contrib",
+        "name":  "OpenCV contrib modules",
+        "version":  "5.0.0",
+        "license":  "Apache-2.0",
+        "source":  "https://github.com/opencv/opencv_contrib",
+        "files":  [
+                      "LICENSE",
+                      "wechat_qrcode-LICENSE",
+                      "xfeatures2d-kaze-LICENSE",
+                      "xfeatures2d-kaze-LICENSE.AKAZE",
+                      "xfeatures2d-kaze-LICENSE.KAZE",
+                      "surface_matching-PATENTS.txt",
+                      "rgbd-LICENSE_KinectFusion.md"
+                  ]
+    },
+    {
+        "folder":  "softfloat",
+        "name":  "Berkeley SoftFloat (in OpenCV core)",
+        "version":  "OpenCV 5.0.0",
+        "license":  "BSD-3-Clause",
+        "source":  "https://github.com/opencv/opencv/tree/5.0.0/modules/core/3rdparty/SoftFloat",
+        "files":  [
+                      "COPYING.txt"
+                  ]
+    },
+    {
+        "folder":  "annoy",
+        "name":  "Annoy (in OpenCV features)",
+        "version":  "OpenCV 5.0.0",
+        "license":  "Apache-2.0",
+        "source":  "https://github.com/opencv/opencv/tree/5.0.0/modules/features/3rdparty/annoy",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "opencl-headers",
+        "name":  "OpenCL headers (in OpenCV)",
+        "version":  "OpenCV 5.0.0",
+        "license":  "Apache-2.0 / MIT-style",
+        "source":  "https://github.com/opencv/opencv/tree/5.0.0/3rdparty/include/opencl",
+        "files":  [
+                      "LICENSE.txt"
+                  ]
+    },
+    {
+        "folder":  "protobuf",
+        "name":  "Protocol Buffers (OpenCV 3rdparty)",
+        "version":  "OpenCV 5.0.0",
+        "license":  "BSD-3-Clause",
+        "source":  "https://github.com/opencv/opencv/tree/5.0.0/3rdparty/protobuf",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "flatbuffers",
+        "name":  "FlatBuffers (OpenCV 3rdparty)",
+        "version":  "OpenCV 5.0.0",
+        "license":  "Apache-2.0",
+        "source":  "https://github.com/opencv/opencv/tree/5.0.0/3rdparty/flatbuffers",
+        "files":  [
+                      "LICENSE.txt"
+                  ]
+    },
+    {
+        "folder":  "dlpack",
+        "name":  "DLPack (OpenCV 3rdparty)",
+        "version":  "OpenCV 5.0.0",
+        "license":  "Apache-2.0",
+        "source":  "https://github.com/opencv/opencv/tree/5.0.0/3rdparty/dlpack",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "mlas",
+        "name":  "MLAS (OpenCV 3rdparty)",
+        "version":  "OpenCV 5.0.0",
+        "license":  "MIT",
+        "source":  "https://github.com/opencv/opencv/tree/5.0.0/3rdparty/mlas",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "ittnotify",
+        "name":  "Intel ITT API (OpenCV 3rdparty)",
+        "version":  "OpenCV 5.0.0",
+        "license":  "BSD-3-Clause OR GPL-2.0",
+        "source":  "https://github.com/opencv/opencv/tree/5.0.0/3rdparty/ittnotify",
+        "files":  [
+                      "LICENSE-from-ittnotify.h.txt"
+                  ]
+    },
+    {
+        "folder":  "ippicv",
+        "name":  "Intel IPP ICV (downloaded by OpenCV build)",
+        "version":  "2026.0.0 win intel64",
+        "license":  "Intel Simplified Software License",
+        "source":  "https://github.com/opencv/opencv_3rdparty/tree/406d398c436d0465c8e53dd432d9ecd9301d5f4a/ippicv",
+        "files":  [
+                      "EULA.rtf",
+                      "third-party-programs.txt"
+                  ]
+    },
+    {
+        "folder":  "tesseract",
+        "name":  "Tesseract OCR",
+        "version":  "5.5.2",
+        "license":  "Apache-2.0",
+        "source":  "https://github.com/tesseract-ocr/tesseract",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "leptonica",
+        "name":  "Leptonica",
+        "version":  "1.87.0",
+        "license":  "BSD-2-Clause",
+        "source":  "https://github.com/DanBloomberg/leptonica",
+        "files":  [
+                      "leptonica-license.txt"
+                  ]
+    },
+    {
+        "folder":  "libarchive",
+        "name":  "libarchive",
+        "version":  "3.8.5",
+        "license":  "BSD-2-Clause and others",
+        "source":  "https://github.com/libarchive/libarchive",
+        "files":  [
+                      "COPYING"
+                  ]
+    },
+    {
+        "folder":  "curl",
+        "name":  "curl",
+        "version":  "8.18.0",
+        "license":  "curl",
+        "source":  "https://github.com/curl/curl",
+        "files":  [
+                      "COPYING"
+                  ]
+    },
+    {
+        "folder":  "openssl",
+        "name":  "OpenSSL",
+        "version":  "3.6.1",
+        "license":  "Apache-2.0",
+        "source":  "https://github.com/openssl/openssl",
+        "files":  [
+                      "LICENSE.txt"
+                  ]
+    },
+    {
+        "folder":  "zlib",
+        "name":  "zlib",
+        "version":  "1.3.1",
+        "license":  "Zlib",
+        "source":  "https://github.com/madler/zlib",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "libpng",
+        "name":  "libpng",
+        "version":  "1.6.55",
+        "license":  "libpng-2.0",
+        "source":  "https://github.com/pnggroup/libpng",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "libjpeg-turbo",
+        "name":  "libjpeg-turbo",
+        "version":  "3.1.3",
+        "license":  "IJG AND BSD-3-Clause AND Zlib",
+        "source":  "https://github.com/libjpeg-turbo/libjpeg-turbo",
+        "files":  [
+                      "LICENSE.md",
+                      "README.ijg"
+                  ]
+    },
+    {
+        "folder":  "libtiff",
+        "name":  "LibTIFF",
+        "version":  "4.7.1",
+        "license":  "libtiff",
+        "source":  "https://gitlab.com/libtiff/libtiff",
+        "files":  [
+                      "LICENSE.md"
+                  ]
+    },
+    {
+        "folder":  "libwebp",
+        "name":  "libwebp",
+        "version":  "1.6.0",
+        "license":  "BSD-3-Clause",
+        "source":  "https://github.com/webmproject/libwebp",
+        "files":  [
+                      "COPYING",
+                      "PATENTS"
+                  ]
+    },
+    {
+        "folder":  "openjpeg",
+        "name":  "OpenJPEG",
+        "version":  "2.5.4",
+        "license":  "BSD-2-Clause",
+        "source":  "https://github.com/uclouvain/openjpeg",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "giflib",
+        "name":  "GIFLIB",
+        "version":  "5.2.2",
+        "license":  "MIT",
+        "source":  "https://sourceforge.net/projects/giflib/",
+        "files":  [
+                      "COPYING"
+                  ]
+    },
+    {
+        "folder":  "lz4",
+        "name":  "LZ4",
+        "version":  "1.10.0",
+        "license":  "BSD-2-Clause",
+        "source":  "https://github.com/lz4/lz4",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "xz",
+        "name":  "XZ Utils (liblzma)",
+        "version":  "5.8.2",
+        "license":  "0BSD",
+        "source":  "https://github.com/tukaani-project/xz",
+        "files":  [
+                      "COPYING",
+                      "COPYING.0BSD"
+                  ]
+    },
+    {
+        "folder":  "bzip2",
+        "name":  "bzip2",
+        "version":  "1.0.8",
+        "license":  "bzip2-1.0.6",
+        "source":  "https://sourceware.org/bzip2/",
+        "files":  [
+                      "LICENSE"
+                  ]
+    },
+    {
+        "folder":  "zstd",
+        "name":  "Zstandard",
+        "version":  "1.5.7",
+        "license":  "BSD-3-Clause (chosen of BSD-3-Clause OR GPL-2.0)",
+        "source":  "https://github.com/facebook/zstd",
+        "files":  [
+                      "LICENSE"
+                  ]
+    }
+]

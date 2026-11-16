@@ -40,6 +40,18 @@
     </ItemGroup>
     <Error Condition="'@(_RtLic)' == ''" Text=".NET 런타임 꾸러미의 라이선스 글을 못 찾음(ResolvedRuntimePack)" />
 
+    <!-- OpenCvSharpExtern.dll 안에 정적으로 묶인 부품(OpenCV·contrib·tesseract·코덱 등)의 원문. 목록은 그 판 하나에만 맞으므로 판이 바뀌면 멈춘다(다시 모으기: 개발 PC의 시험/고지모으기_1116/) -->
+    <PropertyGroup>
+      <_ExternLicDir>$(MSBuildThisFileDirectory)..\licenses\OpenCvSharpExtern\</_ExternLicDir>
+    </PropertyGroup>
+    <Error Condition="'$(OpenCvSharpVersion)' != '5.0.0.20261018'"
+           Text="licenses/OpenCvSharpExtern/의 부품 목록은 OpenCvSharp 5.0.0.20261018용이다. 판($(OpenCvSharpVersion))이 바뀌었으니 묶인 부품과 라이선스 글을 다시 모은다." />
+    <Error Condition="!Exists('$(_ExternLicDir)README.txt')" Text="licenses/OpenCvSharpExtern/README.txt 없음" />
+    <ItemGroup>
+      <_ExternLic Include="$(_ExternLicDir)**\*" Exclude="$(_ExternLicDir)components.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_ExternLic)" DestinationFiles="@(_ExternLic->'$(_TpnDir)OpenCvSharpExtern\%(RecursiveDir)%(Filename)%(Extension)')" />
+
     <Copy SourceFiles="$(_ApacheText)" DestinationFolder="$(_TpnDir)OpenCvSharp5" />
     <Copy SourceFiles="@(_Wv2Lic)" DestinationFolder="$(_TpnDir)Microsoft.Web.WebView2" Condition="Exists('%(FullPath)')" />
     <Copy SourceFiles="@(_RtLic)" DestinationFiles="@(_RtLic->'$(_TpnDir)%(Pack)\%(Filename)%(Extension)')" />
@@ -51,13 +63,13 @@
       <_TpnLine Include="Each license text is in the licenses folder next to this file." />
       <_TpnLine Include="%20" />
       <_TpnLine Include="- OpenCvSharp5 $(OpenCvSharpVersion) (https://github.com/shimat/opencvsharp), including native OpenCV 5.0.0 (https://opencv.org): $(_OcvLicense) - licenses/OpenCvSharp5/Apache-2.0.txt" />
+      <_TpnLine Include="  OpenCvSharpExtern.dll also statically links OpenCV contrib, Tesseract, Leptonica, libjpeg-turbo, libpng, LibTIFF, libwebp, OpenJPEG, zlib, OpenSSL, curl, libarchive and more: licenses/OpenCvSharpExtern/README.txt" />
       <_TpnLine Include="- Microsoft.Web.WebView2 $(WebView2Version) (https://aka.ms/webview): licenses/Microsoft.Web.WebView2/" />
       <_TpnLine Include="- %(_RtPack.FrameworkName) %(_RtPack.NuGetPackageVersion) (https://github.com/dotnet): licenses/%(_RtPack.FrameworkName)/" />
       <_TpnLine Include="%20" />
       <_TpnLine Include="The WebView2 Runtime is not included. The program uses the Evergreen runtime installed in Windows." />
     </ItemGroup>
     <WriteLinesToFile File="$(PublishDir)THIRD-PARTY-NOTICES.txt" Lines="@(_TpnLine)" Overwrite="true" Encoding="UTF-8" />
-    <Warning Text="OpenCV가 네이티브 DLL에 묶은 3rdparty 라이브러리(zlib·libpng 등)의 고지는 아직 안 모았다(배포 전 확인)." />
     <Message Importance="high" Text="외부 부품 고지 → $(PublishDir)THIRD-PARTY-NOTICES.txt" />
   </Target>
 </Project>

@@ -1,5 +1,10 @@
 # 원신 지도 합치기
 
+> ### ⬇️ [실행 파일 받기 (최신 Releases)](https://github.com/codle-codle/genshin-map-stitcher/releases/latest)
+> Assets의 **`GenshinMap-v…-win-x64.zip`** 을 받아 압축을 풀고 `GenshinMap.exe`를 실행한다.
+> 초록색 「Code」 단추의 Download ZIP과 「Source code」는 **소스 코드**라서 바로 실행되지 않는다.
+> 처음 켤 때 뜨는 경고 창은 [2-1-1](#2-1-1-처음-켤-때-뜨는-경고-두-개)을 본다.
+
 원신의 큰 지도(지도 화면)를 앱이 대신 끌어 가며 찍고, 찍은 사진을 한 장으로 합친 뒤 가장자리를 다듬어 주는 Windows 앱이다. C#(.NET 10 + WebView2)으로 만들었다.
 
 이 문서는 처음 받은 사람과 AI 코딩 에이전트가 같이 읽도록 썼다. 오류를 고치거나 더 발전시키려면 **5장(한계)·6장(추측과 못 해 본 실험)·7장(고치는 법)** 부터 보면 된다.
